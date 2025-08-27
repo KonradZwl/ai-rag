@@ -29,7 +29,7 @@ with open("../data/faq.json", "r", encoding="utf-8") as f:
 documents = []
 for item in faq_data["faq"]:
     doc = Document(
-        page_content=item["answer"],
+        page_content=f"Q: {item['question']}\nA: {item['answer']}",
         metadata={"question": item["question"]}
     )
     documents.append(doc)

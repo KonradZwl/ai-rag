@@ -30,7 +30,7 @@ prompt_template = """
 You are a precise assistant that answers questions using ONLY the context below.
 
 Rules:
-1. Answer ONLY the specific question that was asked. Do not include unrelated information.
+1. Answer ONLY the specific question that was asked, based on the provided context. Do not include unrelated information.
 2. Write the answer in clear, natural, complete sentences. Avoid robotic phrasing such as "Based on the information provided in the context".
 3. If the context does not contain the answer, say: "I can't help you with that."
 
@@ -55,6 +55,7 @@ qa_chain = RetrievalQA.from_chain_type(
     chain_type_kwargs={
         "prompt": PROMPT
         }
+    , return_source_documents=True
 )
 
 while True:
@@ -62,6 +63,8 @@ while True:
     if question.lower() in ["exit", "quit"]:
         break
 
-    # Call the QA chain as usual
     response = qa_chain.invoke({"query": question})
-    print(f"\n💡 Answer: {response['result']}")
+    print("Retrieved context:")
+    for doc in response["source_documents"]:
+        print(doc.page_content)
+    print(f"Answer: {response['result']}")
