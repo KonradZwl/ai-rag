@@ -5,7 +5,8 @@ on:
   workflow_dispatch:
 permissions:
   contents: read
-  issues: write
+  issues: read
+  pull-requests: read
 tools:
   github:
     toolsets: [default]
