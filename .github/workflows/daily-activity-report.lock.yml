@@ -23,7 +23,7 @@
 #
 # Generate a daily summary of repository activity and create an issue with the report
 #
-# frontmatter-hash: 7db9bee3afc2e5d962e80132cd01a33e28bfef36b83d73c886da06d28028115e
+# frontmatter-hash: 92dba8d0ca63ee3988836bb635f5e8809d5ff54ba35ab806d4e3e85ba40e3215
 
 name: "Daily Repository Activity Report"
 "on":
