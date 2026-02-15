@@ -1,5 +1,6 @@
 ---
 description: Generate a daily summary of repository activity and create an issue with the report
+engine: copilot
 on:
   schedule: daily
 permissions:
