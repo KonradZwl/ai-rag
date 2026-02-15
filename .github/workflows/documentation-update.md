@@ -114,7 +114,7 @@ Example JSON format for the safe output:
 {
   "type": "create-pull-request",
   "title": "Update project documentation",
-  "body": "# Documentation Update\n\nThis PR updates the project documentation based on the current repository state.\n\n## Changes Made\n\n- Created comprehensive documentation.md\n- Documented project structure and features\n- Added setup and usage instructions\n\n---\n*Generated automatically by Documentation Update workflow*",
+  "body": "This PR updates the project documentation based on the current repository state.\n\n## Changes Made\n\n- Created comprehensive documentation.md\n- Documented project structure and features\n- Added setup and usage instructions\n\n---\n*Generated automatically by Documentation Update workflow*",
   "branch": "docs/auto-update-documentation"
 }
 ```
