@@ -96,24 +96,26 @@ Create a comprehensive `documentation.md` file (or update if it exists) that inc
 
 ### 4. Create Pull Request
 
-Use the `create-pull-request` safe output to submit your documentation changes.
+After creating or updating the `documentation.md` file, use the `create-pull-request` safe output to submit your documentation changes.
 
 The safe output expects a JSON object with:
 - `title`: PR title (will be automatically prefixed with "[docs] ")
 - `body`: PR description
 - `branch`: Branch name for the PR
-- `files`: Object mapping file paths to their new contents
 
-Example JSON format:
+**Important**: You must create or update the `documentation.md` file BEFORE calling the create-pull-request safe output. The safe output will detect the file changes and include them in the PR.
+
+Example workflow:
+1. First, create/update the documentation.md file using the `edit` or `create` tool
+2. Then, use the create-pull-request safe output to submit the PR
+
+Example JSON format for the safe output:
 ```json
 {
   "type": "create-pull-request",
   "title": "Update project documentation",
   "body": "# Documentation Update\n\nThis PR updates the project documentation based on the current repository state.\n\n## Changes Made\n\n- Created comprehensive documentation.md\n- Documented project structure and features\n- Added setup and usage instructions\n\n---\n*Generated automatically by Documentation Update workflow*",
-  "branch": "docs/auto-update-documentation",
-  "files": {
-    "documentation.md": "<full content of the documentation file>"
-  }
+  "branch": "docs/auto-update-documentation"
 }
 ```
 
