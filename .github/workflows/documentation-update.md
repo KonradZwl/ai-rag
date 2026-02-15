@@ -5,8 +5,7 @@ on:
   workflow_dispatch:
 permissions:
   contents: read
-  issues: read
-  pull-requests: read
+  issues: write
 tools:
   github:
     toolsets: [default]
@@ -15,10 +14,9 @@ tools:
   view: true
   glob: true
 safe-outputs:
-  create-pull-request:
+  create-issue:
     title-prefix: "[docs] "
     labels: [documentation, automated]
-    draft: false
 ---
 
 # Documentation Update Workflow
@@ -94,28 +92,26 @@ Create a comprehensive `documentation.md` file (or update if it exists) that inc
 - Keep documentation up-to-date with the current codebase
 - Reference actual file paths and code from the repository
 
-### 4. Create Pull Request
+### 4. Create Issue
 
-After creating or updating the `documentation.md` file, use the `create-pull-request` safe output to submit your documentation changes.
+After creating or updating the `documentation.md` file, use the `create-issue` safe output to submit your documentation changes.
 
 The safe output expects a JSON object with:
-- `title`: PR title (will be automatically prefixed with "[docs] ")
-- `body`: PR description
-- `branch`: Branch name for the PR
+- `title`: Issue title (will be automatically prefixed with "[docs] ")
+- `body`: Issue description
 
-**Important**: You must create or update the `documentation.md` file BEFORE calling the create-pull-request safe output. The safe output will detect the file changes and include them in the PR.
+**Important**: You must create or update the `documentation.md` file BEFORE calling the create-issue safe output. The safe output will detect the file changes and reference them in the issue.
 
 Example workflow:
 1. First, create/update the documentation.md file using the `edit` or `create` tool
-2. Then, use the create-pull-request safe output to submit the PR
+2. Then, use the create-issue safe output to submit the issue
 
 Example JSON format for the safe output:
 ```json
 {
-  "type": "create-pull-request",
+  "type": "create-issue",
   "title": "Update project documentation",
-  "body": "This PR updates the project documentation based on the current repository state.\n\n## Changes Made\n\n- Created comprehensive documentation.md\n- Documented project structure and features\n- Added setup and usage instructions\n\n---\n*Generated automatically by Documentation Update workflow*",
-  "branch": "docs/auto-update-documentation"
+  "body": "This issue tracks updates to the project documentation based on the current repository state.\n\n## Changes Made\n\n- Created comprehensive documentation.md\n- Documented project structure and features\n- Added setup and usage instructions\n\n---\n*Generated automatically by Documentation Update workflow*"
 }
 ```
 
@@ -133,7 +129,7 @@ Example JSON format for the safe output:
 
 4. Create or update the documentation.md file with comprehensive information
 
-5. Use the `create-pull-request` safe output to submit your changes as a pull request
+5. Use the `create-issue` safe output to submit your changes as an issue
 
 6. If documentation.md already exists, update it to reflect current state
    If it doesn't exist, create it from scratch
