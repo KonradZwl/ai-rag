@@ -1,12 +1,12 @@
-"""Ingest FAQ data into Pinecone using LangChain.
+"""FAQ-gegevens opnemen in Pinecone met LangChain.
 
-Reads question-answer pairs from ``data/faq.json``, wraps each pair in a
-LangChain ``Document``, generates embeddings via Ollama, and upserts the
-vectors into a Pinecone serverless index.
+Leest vraag-antwoordparen uit ``data/faq.json``, verpakt elk paar in een
+LangChain ``Document``, genereert embeddings via Ollama en voegt de vectoren
+toe aan een Pinecone serverless index.
 
-Required environment variables (set in ``.env``):
-    PINECONE_API_KEY – Pinecone API key.
-    OLLAMA_API_URL   – Base URL of the Ollama instance (e.g. http://localhost:11434).
+Vereiste omgevingsvariabelen (in te stellen in ``.env``):
+    PINECONE_API_KEY -- Pinecone API-sleutel.
+    OLLAMA_API_URL   -- Basis-URL van de Ollama-instantie (bijv. http://localhost:11434).
 """
 
 import os

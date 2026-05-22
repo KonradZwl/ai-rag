@@ -1,12 +1,12 @@
-"""Interactive RAG query loop using LangChain, Pinecone, and Ollama.
+"""Interactieve RAG-querylus met LangChain, Pinecone en Ollama.
 
-Connects to an existing Pinecone index (populated by ``ingest.py``), retrieves
-the top-k most relevant documents for a user's question, and generates an
-answer with a local Ollama LLM.
+Maakt verbinding met een bestaande Pinecone-index (gevuld door ``ingest.py``),
+haalt de top-k meest relevante documenten op voor de vraag van een gebruiker
+en genereert een antwoord met een lokaal Ollama LLM.
 
-Required environment variables (set in ``.env``):
-    PINECONE_API_KEY – Pinecone API key.
-    OLLAMA_API_URL   – Base URL of the Ollama instance (e.g. http://localhost:11434).
+Vereiste omgevingsvariabelen (in te stellen in ``.env``):
+    PINECONE_API_KEY -- Pinecone API-sleutel.
+    OLLAMA_API_URL   -- Basis-URL van de Ollama-instantie (bijv. http://localhost:11434).
 """
 
 import os
