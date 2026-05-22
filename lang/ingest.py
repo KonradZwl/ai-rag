@@ -1,3 +1,14 @@
+"""FAQ-gegevens opnemen in Pinecone met LangChain.
+
+Leest vraag-antwoordparen uit ``data/faq.json``, verpakt elk paar in een
+LangChain ``Document``, genereert embeddings via Ollama en voegt de vectoren
+toe aan een Pinecone serverless index.
+
+Vereiste omgevingsvariabelen (in te stellen in ``.env``):
+    PINECONE_API_KEY -- Pinecone API-sleutel.
+    OLLAMA_API_URL   -- Basis-URL van de Ollama-instantie (bijv. http://localhost:11434).
+"""
+
 import os
 import json
 from dotenv import load_dotenv

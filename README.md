@@ -1,61 +1,95 @@
-# AI-RAG: Retrieval-Augmented Generation with Pinecone and Ollama
+# AI-RAG: Retrieval-Augmented Generation met Pinecone en Ollama
 
-This project demonstrates a Retrieval-Augmented Generation (RAG) pipeline using Python, LangChain, Pinecone, and Ollama.
-It ingests FAQ data, stores question-answer pairs in a vector database, and answers user queries using a local LLM.
+Dit project demonstreert een Retrieval-Augmented Generation (RAG) pipeline met Python, LangChain, Pinecone en Ollama.
+Het neemt FAQ-gegevens op, slaat vraag-antwoordparen op in een vectordatabase en beantwoordt gebruikersvragen met een lokaal LLM.
 
-## Features
+## Functionaliteiten
 
-- Ingests FAQ data from JSON or PDF
-- Splits and embeds documents using Ollama
-- Stores embeddings in Pinecone vector database
-- Retrieves relevant context for user questions
-- Uses a local LLM (Ollama) to generate answers based on retrieved context
-- Environment configuration via .env file
+- Neemt FAQ-gegevens op vanuit JSON of PDF
+- Splitst en embed documenten met Ollama
+- Slaat embeddings op in een Pinecone vectordatabase
+- Haalt relevante context op voor gebruikersvragen
+- Gebruikt een lokaal LLM (Ollama) om antwoorden te genereren op basis van opgehaalde context
+- Omgevingsconfiguratie via .env-bestand
 
-## Setup
+## Installatie
 
-**Configure environment variables**
-   - Edit .env in the project root:
+**Omgevingsvariabelen configureren**
+   - Bewerk .env in de projectroot:
      ```
-     PINECONE_API_KEY=your_pinecone_api_key
-     PINECONE_HOST=your_pinecone_host_url
-     PINECONE_LANG=your_pinecone_host_url_lang_version
+     PINECONE_API_KEY=jouw_pinecone_api_sleutel
+     PINECONE_HOST=jouw_pinecone_host_url
+     PINECONE_LANG=jouw_pinecone_host_url_lang_versie
      OLLAMA_API_URL=http://localhost:11434
      ```
-**Start Ollama**
-   - Install and run Ollama locally: [Ollama documentation](https://ollama.com/)
-   - Pull required models (e.g., `ollama pull all-minilm:l6-v2`)
+**Ollama starten**
+   - Installeer en start Ollama lokaal: [Ollama-documentatie](https://ollama.com/)
+   - Pull de benodigde modellen (bijv. `ollama pull all-minilm:l6-v2`)
 
-## Usage
+## Gebruik
 
-### Ingest FAQ Data
+Het project bevat twee onafhankelijke implementaties van de RAG-pipeline:
 
-- Edit and run `lang/ingest.py` to ingest FAQ data from `data/faq.json` into Pinecone.
+### `lang/` -- Pipeline op basis van LangChain
 
-### Query the System
+Gebruikt LangChain-abstracties voor documentverwerking, embedding, retrieval en LLM-orchestratie.
 
-- Run `lang/main.py` to start the interactive question-answering loop:
-  ```bash
-  python main.py
-  ```
-- Type your question and get an answer based on the retrieved context.
+1. **FAQ-gegevens opnemen** -- voer `lang/ingest.py` uit om `data/faq.json` in Pinecone te laden.
+   ```bash
+   cd lang
+   python ingest.py
+   ```
+2. **Vragen stellen** -- voer `lang/main.py` uit voor een interactieve vraag-en-antwoordlus.
+   ```bash
+   python main.py
+   ```
 
-## File Structure
+| Component | Detail |
+|---|---|
+| Embeddingmodel | `all-minilm:l6-v2` (384 dimensies) |
+| LLM | `qwen2.5:7b-instruct` |
+| Indexnaam | `faq-rag-test` |
+
+### `manual/` -- Lichtgewicht pipeline (zonder LangChain)
+
+Roept de Ollama- en Pinecone REST API's direct aan -- handig om te begrijpen wat LangChain abstraheert.
+
+1. **Een PDF opnemen** -- voer `manual/ingest.py` uit om tekst uit `data/info.pdf` te extraheren, op te splitsen en in Pinecone op te slaan.
+   ```bash
+   cd manual
+   python ingest.py
+   ```
+2. **Vragen stellen** -- voer `manual/query.py` uit om een enkele vraag te stellen en een beknopt antwoord te krijgen.
+   ```bash
+   python query.py
+   ```
+
+| Component | Detail |
+|---|---|
+| Embeddingmodel | `nomic-embed-text:latest` (768 dimensies) |
+| LLM | `qwen2.5:0.5b` |
+| Indexnaam | `pdf-rag-test` |
+
+## Bestandsstructuur
 
 ```
 .
 ├── data/
-│   └── faq.json
+│   ├── faq.json          # FAQ-dataset (gebruikt door lang/)
+│   └── info.pdf          # PDF-document (gebruikt door manual/)
 ├── lang/
-│   ├── ingest.py
-│   └── main.py
+│   ├── ingest.py         # FAQ-opname via LangChain
+│   └── main.py           # Interactieve Q&A via LangChain
+├── manual/
+│   ├── ingest.py         # PDF-opname via directe API-aanroepen
+│   └── query.py          # Enkele-vraag query via directe API-aanroepen
 ├── requirements.txt
-├── .env
+├── .env                  # Omgevingsvariabelen (niet gecommit)
 └── README.md
 ```
 
-## Notes
+## Opmerkingen
 
-- Make sure your Pinecone index dimension matches your embedding model output.
-- For best results, store both questions and answers together in each document.
-- You can adjust chunk size and retrieval parameters in the code.
+- Zorg ervoor dat de dimensie van je Pinecone-index overeenkomt met de output van je embeddingmodel (`lang/` gebruikt 384, `manual/` gebruikt 768).
+- Sla voor de beste resultaten zowel vragen als antwoorden samen op in elk document.
+- Je kunt de chunkgrootte en retrievalparameters aanpassen in de code.

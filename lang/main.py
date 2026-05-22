@@ -1,3 +1,14 @@
+"""Interactieve RAG-querylus met LangChain, Pinecone en Ollama.
+
+Maakt verbinding met een bestaande Pinecone-index (gevuld door ``ingest.py``),
+haalt de top-k meest relevante documenten op voor de vraag van een gebruiker
+en genereert een antwoord met een lokaal Ollama LLM.
+
+Vereiste omgevingsvariabelen (in te stellen in ``.env``):
+    PINECONE_API_KEY -- Pinecone API-sleutel.
+    OLLAMA_API_URL   -- Basis-URL van de Ollama-instantie (bijv. http://localhost:11434).
+"""
+
 import os
 from dotenv import load_dotenv
 

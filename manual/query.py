@@ -1,3 +1,15 @@
+"""De Pinecone-index bevragen en een antwoord genereren zonder LangChain.
+
+Embed een gebruikersvraag via de Ollama REST API, bevraagt Pinecone voor de
+top-k overeenkomende chunks en stuurt de opgehaalde context samen met de
+vraag naar een lokaal Ollama LLM om een beknopt antwoord te genereren.
+
+Vereiste omgevingsvariabelen (in te stellen in ``.env``):
+    PINECONE_API_KEY -- Pinecone API-sleutel.
+    PINECONE_HOST    -- Pinecone index host-URL.
+    OLLAMA_API_URL   -- Basis-URL van de Ollama-instantie (bijv. http://localhost:11434).
+"""
+
 from pinecone import Pinecone
 import requests
 from dotenv import load_dotenv
@@ -31,7 +43,7 @@ results = index.query(
 matches = results['matches']
 top_context = "\n\n".join(match['metadata']['text'] for match in matches)
 
-# Structure the prompt using the context and question
+# Structureer de prompt met de context en de vraag
 llm_prompt = f"""
 You are an expert assistant. Use the context below to answer the question as concisely as possible.
 If the answer is not contained in the context, say: "I don't know."
@@ -44,7 +56,7 @@ Question: {question}
 Answer (concise):
 """
 
-# Call the LLM
+# Roep het LLM aan
 llm_response = requests.post(
     ollama_api_url + "/api/generate",
     json={
