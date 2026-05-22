@@ -1,3 +1,14 @@
+"""Ingest FAQ data into Pinecone using LangChain.
+
+Reads question-answer pairs from ``data/faq.json``, wraps each pair in a
+LangChain ``Document``, generates embeddings via Ollama, and upserts the
+vectors into a Pinecone serverless index.
+
+Required environment variables (set in ``.env``):
+    PINECONE_API_KEY – Pinecone API key.
+    OLLAMA_API_URL   – Base URL of the Ollama instance (e.g. http://localhost:11434).
+"""
+
 import os
 import json
 from dotenv import load_dotenv

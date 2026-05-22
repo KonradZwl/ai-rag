@@ -28,34 +28,68 @@ It ingests FAQ data, stores question-answer pairs in a vector database, and answ
 
 ## Usage
 
-### Ingest FAQ Data
+The project includes two independent implementations of the RAG pipeline:
 
-- Edit and run `lang/ingest.py` to ingest FAQ data from `data/faq.json` into Pinecone.
+### `lang/` — LangChain-based pipeline
 
-### Query the System
+Uses LangChain abstractions for document handling, embedding, retrieval, and LLM orchestration.
 
-- Run `lang/main.py` to start the interactive question-answering loop:
-  ```bash
-  python main.py
-  ```
-- Type your question and get an answer based on the retrieved context.
+1. **Ingest FAQ data** — run `lang/ingest.py` to load `data/faq.json` into Pinecone.
+   ```bash
+   cd lang
+   python ingest.py
+   ```
+2. **Query** — run `lang/main.py` for an interactive Q&A loop.
+   ```bash
+   python main.py
+   ```
+
+| Component | Detail |
+|---|---|
+| Embedding model | `all-minilm:l6-v2` (384 dims) |
+| LLM | `qwen2.5:7b-instruct` |
+| Index name | `faq-rag-test` |
+
+### `manual/` — Lightweight pipeline (no LangChain)
+
+Calls the Ollama and Pinecone REST APIs directly — useful for understanding what LangChain abstracts away.
+
+1. **Ingest a PDF** — run `manual/ingest.py` to extract text from `data/info.pdf`, chunk it, and upsert into Pinecone.
+   ```bash
+   cd manual
+   python ingest.py
+   ```
+2. **Query** — run `manual/query.py` to ask a single question and get a concise answer.
+   ```bash
+   python query.py
+   ```
+
+| Component | Detail |
+|---|---|
+| Embedding model | `nomic-embed-text:latest` (768 dims) |
+| LLM | `qwen2.5:0.5b` |
+| Index name | `pdf-rag-test` |
 
 ## File Structure
 
 ```
 .
 ├── data/
-│   └── faq.json
+│   ├── faq.json          # FAQ dataset (used by lang/)
+│   └── info.pdf          # PDF document (used by manual/)
 ├── lang/
-│   ├── ingest.py
-│   └── main.py
+│   ├── ingest.py         # LangChain-based FAQ ingestion
+│   └── main.py           # LangChain-based interactive Q&A
+├── manual/
+│   ├── ingest.py         # Direct-API PDF ingestion
+│   └── query.py          # Direct-API single-question query
 ├── requirements.txt
-├── .env
+├── .env                  # Environment variables (not committed)
 └── README.md
 ```
 
 ## Notes
 
-- Make sure your Pinecone index dimension matches your embedding model output.
+- Make sure your Pinecone index dimension matches your embedding model output (`lang/` uses 384, `manual/` uses 768).
 - For best results, store both questions and answers together in each document.
 - You can adjust chunk size and retrieval parameters in the code.

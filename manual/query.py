@@ -1,3 +1,15 @@
+"""Query the Pinecone index and generate an answer without LangChain.
+
+Embeds a user question via the Ollama REST API, queries Pinecone for the
+top-k matching chunks, and sends the retrieved context plus the question to
+a local Ollama LLM to produce a concise answer.
+
+Required environment variables (set in ``.env``):
+    PINECONE_API_KEY – Pinecone API key.
+    PINECONE_HOST    – Pinecone index host URL.
+    OLLAMA_API_URL   – Base URL of the Ollama instance (e.g. http://localhost:11434).
+"""
+
 from pinecone import Pinecone
 import requests
 from dotenv import load_dotenv
